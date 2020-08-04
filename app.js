@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('<h1>App Started</h1>');
+  res.send('<h1>App started and connected with git</h1>');
 });
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
