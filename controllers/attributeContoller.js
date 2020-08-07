@@ -1,41 +1,65 @@
 const catchAsync = require('../utils/catchAsync');
 const Attribute = require('../models/attributeModel');
-
-exports.setProductId = (req, res, next) => {
-  if(!req.body.productID) req.body.productID = req.params.productID;
-  next();
-}
+const ApiFeatures = require('../utils/apiFeatures');
+const AppError = require('../utils/appError');
 
 exports.createAttribute = catchAsync(async (req, res, next) => {
+  if (req.params.id) req.body.product = req.params.id;
   const attribute = await Attribute.create(req.body);
-  res.status(200).json({
+  res.status(201).json({
     status: 'success',
-    success: true,
-    data: {
-      attribute
-    }
+    isSuccess: true,
+    attribute,
   });
 });
 
-exports.getAllAttribute = catchAsync(async (req, res, next) => {
-  const attributes = await Attribute.find();
+exports.getAllAttributes = catchAsync(async (req, res, next) => {
+  if (req.params.id) req.body.product = req.params.id;
+  const features = new ApiFeatures(Attribute.find(req.body.product), req.query);
+  const attributes = await features.query;
   res.status(200).json({
     status: 'success',
-    success: true,
-    data: {
-      attributes
-    }
+    isSuccess: true,
+    results: attributes.length,
+    attributes,
   });
 });
 
-exports.getAttribute = catchAsync(async (req, res, next) => {
-  const query = Attribute.findById(req.params.attributeId);
-  const attribute = await query.populate({path: 'varients'});
+exports.getOneAttribute = catchAsync(async (req, res, next) => {
+  const attribute = await Attribute.findOne({ _id: req.params.id });
+  if (!attribute)
+    return next(new AppError('Attribute with ID does not found', 401));
   res.status(200).json({
     status: 'success',
-    success: true,
-    data: {
-      attribute
+    isSuccess: true,
+    attribute,
+  });
+});
+
+exports.updateAttribute = catchAsync(async (req, res, next) => {
+  const data = { ...req.body };
+  const excludedFields = ['product'];
+  excludedFields.forEach((el) => delete data[el]);
+  const updatedAttribute = await Attribute.findByIdAndUpdate(
+    req.params.id,
+    data,
+    {
+      new: true,
+      runValidator: true,
     }
+  );
+  res.status(201).json({
+    status: 'success',
+    isSuccess: true,
+    updatedAttribute,
+  });
+});
+
+exports.deleteAttribute = catchAsync(async (req, res, next) => {
+  const deletedAttribute = await Attribute.findByIdAndDelete(req.params.id);
+  res.status(204).json({
+    status: 'success',
+    isSuccess: true,
+    deletedAttribute,
   });
 });

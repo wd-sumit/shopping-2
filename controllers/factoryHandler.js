@@ -44,4 +44,4 @@ exports.UpdateOne = (Model) => catchAsync(async (req, res, next) => {
 exports.deleteOne = (Model) => catchAsync(async (req, res, next) => {
   const data = await Model.findByIdAndDelete(req.params.id);
   createResponse(res, 204, data);
-})
+});

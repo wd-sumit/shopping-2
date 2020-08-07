@@ -3,6 +3,10 @@ const slugify = require('slugify');
 
 const productSchema = new mongoose.Schema({
   sku: String,
+  type: {
+    type: String,
+    enum: ['simple', 'varient']
+  },
   name: {
     type: String,
     required: [true, 'Product name is required']
@@ -46,7 +50,7 @@ const productSchema = new mongoose.Schema({
   images: [String],
   vendor: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User'
+    role: 'Vendor'
   },
   shipping: {
     dimensions: {

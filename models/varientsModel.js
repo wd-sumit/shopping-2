@@ -17,11 +17,12 @@ const varientSchema = new mongoose.Schema({
           validator: function(val) {
             return val < this.salePrice;
           },
-          message: 'Discounted Price should be less than Sale Price '
+          message: 'Discounted Price should be less than Sale Price'
         }
       }
     }
-  ]
+  ],
+  stock: Number
 });
 
 const Varient = mongoose.model('Varient', varientSchema);

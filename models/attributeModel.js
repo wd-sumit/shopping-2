@@ -7,7 +7,7 @@ const attributeSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.ObjectId,
     ref: 'Product',
-    required: [true, 'An attribute shuld belong to a product']
+    required: [true, 'An attribute should belong to a product']
   },
   values: [],
   isVarient: {
