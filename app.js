@@ -66,7 +66,9 @@ app.use((req, res, next) => {
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('<h1>App started and connected</h1>');
+  res.send(
+    '<h1>Added Attribute features for products and minor bug fixes</h1>'
+  );
 });
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
