@@ -5,12 +5,12 @@ const router = express.Router({ mergeParams: true });
 
 router
   .route('/')
-  .post(attributeController.createAttribute)
-  .get(attributeController.getAllAttributes);
+  .post( attributeController.createAttribute)
+  .get(attributeController.setProductId, attributeController.getAllAttributes);
 
 router
   .route('/:id')
-  .get(attributeController.getOneAttribute)
+  .get(attributeController.setProductId, attributeController.getOneAttribute)
   .patch(attributeController.updateAttribute)
   .delete(attributeController.deleteAttribute);
 

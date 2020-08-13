@@ -3,8 +3,12 @@ const Attribute = require('../models/attributeModel');
 const ApiFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 
+exports.setProductId = (req, res, next) => {
+  if (!req.body.product) req.body.product = req.params.productId;
+  next();
+};
+
 exports.createAttribute = catchAsync(async (req, res, next) => {
-  if (req.params.id) req.body.product = req.params.id;
   const attribute = await Attribute.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -14,9 +18,15 @@ exports.createAttribute = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllAttributes = catchAsync(async (req, res, next) => {
-  if (req.params.id) req.body.product = req.params.id;
-  const features = new ApiFeatures(Attribute.find(req.body.product), req.query);
+  const features = new ApiFeatures(Attribute.find(), req.query)
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
+
   const attributes = await features.query;
+  if (!attributes)
+    return next(new AppError('No attribute found for this product', 404));
   res.status(200).json({
     status: 'success',
     isSuccess: true,
@@ -26,7 +36,7 @@ exports.getAllAttributes = catchAsync(async (req, res, next) => {
 });
 
 exports.getOneAttribute = catchAsync(async (req, res, next) => {
-  const attribute = await Attribute.findOne({ _id: req.params.id });
+  const attribute = await Attribute.findById(req.params.id);
   if (!attribute)
     return next(new AppError('Attribute with ID does not found', 401));
   res.status(200).json({

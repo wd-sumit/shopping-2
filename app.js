@@ -12,9 +12,8 @@ const cors = require('cors');
 
 const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
-const vendorRouter = require('./routes/vendorRoutes');
-const adminRouter = require('./routes/adminRoutes');
 const attributeRouter = require('./routes/attributeRoutes');
+const cartRouter = require('./routes/cartRoutes');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -70,11 +69,10 @@ app.get('/', (req, res) => {
     '<h1>Added Attribute features for products and minor bug fixes</h1>'
   );
 });
-app.use('/api/products', productRouter);
-app.use('/api/users', userRouter);
-app.use('/api/vendors', vendorRouter);
-app.use('/api/admins', adminRouter);
-app.use('/api/attributes', attributeRouter);
+app.use('/api/v1/products', productRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/attributes', attributeRouter);
+app.use('/api/v1/cart', cartRouter);
 
 app.all('*', (req, res, next) => {
   next(
