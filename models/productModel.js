@@ -19,10 +19,12 @@ const productSchema = new mongoose.Schema(
       name: String,
       img: String,
     },
-    catagory: {
-      type: String,
-      required: [true, 'Product catagory is required'],
-    },
+    category: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Category',
+      },
+    ],
     price: {
       type: Number,
       required: [true, 'price is required'],

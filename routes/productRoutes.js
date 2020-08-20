@@ -4,7 +4,6 @@ const authController = require('../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
 
-router.use(authController.protect);
 router
   .route('/top-rated-products')
   .get(productController.topRatedProducts, productController.getAllProducts);
@@ -13,8 +12,9 @@ router
   .route('/')
   .get(productController.getAllProducts)
   .post(
-    authController.allowedTo('vendor', 'superadmin', 'admin'),
-    productController.setCreator,
+    authController.protect,
+    authController.allowedTo('vendor', 'superadmin'),
+    authController.setCreator,
     productController.createProduct
   );
 
@@ -22,10 +22,12 @@ router
   .route('/:id')
   .get(productController.getOneProduct)
   .patch(
-    authController.allowedTo('vendor', 'superadmin', 'admin'),
+    authController.protect,
+    authController.allowedTo('vendor', 'superadmin'),
     productController.updateProduct
   )
   .delete(
+    authController.protect,
     authController.allowedTo('vendor', 'superadmin', 'admin'),
     productController.deleteProduct
   );

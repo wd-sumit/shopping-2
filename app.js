@@ -11,9 +11,12 @@ const compression = require('compression');
 const cors = require('cors');
 
 const productRouter = require('./routes/productRoutes');
-const userRouter = require('./routes/userRoutes');
+const authRouter = require('./routes/authRoutes');
+const vendorRouter = require('./routes/vendorRoutes');
+const adminRouter = require('./routes/adminRoutes');
 const attributeRouter = require('./routes/attributeRoutes');
 const cartRouter = require('./routes/cartRoutes');
+const categoryRouter = require('./routes/categoryRoutes');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -66,13 +69,16 @@ app.use((req, res, next) => {
 // Routes
 app.get('/', (req, res) => {
   res.send(
-    '<h1>Added Attribute features for products and minor bug fixes</h1>'
+    '<h1>Added admin and vendor routes</h1>'
   );
 });
 app.use('/api/v1/products', productRouter);
-app.use('/api/v1/users', userRouter);
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/vendor', vendorRouter);
+app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/attributes', attributeRouter);
 app.use('/api/v1/cart', cartRouter);
+app.use('/api/v1/category', categoryRouter);
 
 app.all('*', (req, res, next) => {
   next(
