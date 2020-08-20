@@ -8,12 +8,12 @@ const router = Router();
 router.use(authController.protect, authController.allowedTo('admin'));
 
 router
-  .route('/vendor')
+  .route('/vendors')
   .get(userController.getUserByRole('vendor'))
   .post(authController.setUserRole('vendor'), userController.createUser);
 
 router
-  .route('/vendor/:id')
+  .route('/vendors/:id')
   .get(userController.getOneUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);

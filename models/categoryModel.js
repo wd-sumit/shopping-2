@@ -31,6 +31,8 @@ categorySchema.pre('findOne', function (next) {
   next();
 });
 
+
+
 const Category = mongoose.model('Category', categorySchema);
 
 module.exports = Category;

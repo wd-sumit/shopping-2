@@ -2,6 +2,7 @@ const Cart = require('../models/cartModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const Product = require('../models/productModel');
+const APIFeature = require('../utils/apiFeatures');
 
 exports.addToCart = catchAsync(async (req, res, next) => {
   if (!req.body.user) req.body.user = req.user._id;
@@ -17,12 +18,20 @@ exports.addToCart = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllCartItem = catchAsync(async (req, res, next) => {
-  const query = Cart.find({ user: req.user._id });
-  const item = await query.populate('product');
+  const features = new APIFeature(Cart.find(), req.query)
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
+
+  const item = await features.query.populate({
+    path: 'product',
+    select: 'name discountedPrice',
+  });
   if (!item) return next(new AppError('No item found', 404));
   res.status(200).json({
     status: 'success',
-    success: true,
+    isSuccess: true,
     item,
   });
 });

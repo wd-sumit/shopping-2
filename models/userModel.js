@@ -4,10 +4,8 @@ const bcrypt = require('bcryptjs');
 const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
-  name: {
-    firstName: String,
-    lastName: String,
-  },
+  firstName: String,
+  lastName: String,
   isVerified: {
     type: Boolean,
     default: false,
@@ -56,6 +54,7 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords does not match',
     },
   },
+  address: String,
   shop: {
     name: String,
     address: String,

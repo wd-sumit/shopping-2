@@ -23,6 +23,11 @@ const globalErrorHandler = require('./controllers/errorController');
 // App started
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Global Middlewares
 // Enaeling (cross-origin-resource-sharing)
 app.use(cors());
@@ -68,9 +73,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.get('/', (req, res) => {
-  res.send(
-    '<h1>Added admin and vendor routes</h1>'
-  );
+  res.render('index.pug');
 });
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/auth', authRouter);

@@ -3,12 +3,12 @@ const cartController = require('../controllers/cartController');
 const authController = require('../controllers/authController');
 
 router
-  .route('/:id')
-  .patch(authController.protect, cartController.updateCartItem);
+  .route('/')
+  .get(cartController.getAllCartItem)
+  .post(authController.protect, cartController.addToCart);
 
 router
-  .route('/')
-  .get(authController.protect, cartController.getAllCartItem)
-  .post(authController.protect, cartController.addToCart);
+.route('/:id')
+.patch(authController.protect, cartController.updateCartItem);
 
 module.exports = router;
